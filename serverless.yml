@@ -12,17 +12,22 @@
 # Happy Coding!
 
 service: big-mouth # NOTE: update this with your service name
-
+plugins:
+  - serverless-pseudo-parameters
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
 
 provider:
   name: aws
-  runtime: nodejs6.10
+  runtime: nodejs12.x
   stage: dev
   region: us-east-1
   profile: devLambda
+  iamRoleStatements:
+    - Effect: Allow
+      Action: dynamodb:scan
+      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/restaurants
 functions:
   first-function:
     handler: functions/first-function.main
@@ -30,4 +35,26 @@ functions:
       - http:
           path: /
           method: get
-
+  get-retaurants:
+    handler: functions/get-restaurant.main
+    events:
+      - http:
+          path: /restaurants/
+          method: get
+    environment:
+      restaurant_tables: restaurants
+resources:
+  Resources:
+    restaurantsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: restaurants
+        AttributeDefinitions:
+          - AttributeName: name
+            AttributeType: S
+        KeySchema:
+          - AttributeName: name
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
