@@ -35,6 +35,12 @@ functions:
       - http:
           path: /
           method: get
+    environment:
+       APIG_URL:
+        - Fn::Join:
+          - ""
+          - - 'https://'
+
   get-retaurants:
     handler: functions/get-restaurant.main
     events:

@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.7.2",
     "co": "^4.6.0",
+    "mustache": "^4.0.1",
     "serverless-pseudo-parameters": "^2.5.0"
   },
   "devDependencies": {
