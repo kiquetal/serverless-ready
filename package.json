@@ -9,10 +9,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws4": "^1.10.1",
     "bluebird": "^3.7.2",
     "co": "^4.6.0",
     "mustache": "^4.0.1",
-    "serverless-pseudo-parameters": "^2.5.0"
+    "serverless-pseudo-parameters": "^2.5.0",
+    "superagent": "^6.1.0",
+    "superagent-promise": "^1.1.0",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "aws-sdk": "^2.768.0"

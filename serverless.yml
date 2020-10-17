@@ -28,7 +28,13 @@ provider:
     - Effect: Allow
       Action: dynamodb:scan
       Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/restaurants
+
+    - Effect: Allow
+      Action: execute-api:Invoke
+      Resource: arn:aws:execute-api:#{AWS::Region}:#{AWS::AccountId}:*/*/GET/restaurants/
+
 functions:
+
   first-function:
     handler: functions/first-function.main
     events:
@@ -36,20 +42,23 @@ functions:
           path: /
           method: get
     environment:
-       APIG_URL:
-        - Fn::Join:
-          - ""
-          - - 'https://'
-
+       restaurants_api: https://84ia2fcymf.execute-api.us-east-1.amazonaws.com/dev/restaurants/
   get-retaurants:
     handler: functions/get-restaurant.main
     events:
       - http:
           path: /restaurants/
           method: get
+          authorizer: aws_iam
     environment:
       restaurant_tables: restaurants
+  search-restaurants:
+    handler: functions/search-restaurants.handler
+    method: post
+    authorizer:
+      arn: 
 resources:
+
   Resources:
     restaurantsTable:
       Type: AWS::DynamoDB::Table
