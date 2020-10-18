@@ -19,8 +19,8 @@ function* findRestaurantByTheme(count,theme)
 }
 
 module.exports.main = co.wrap(function* (event,context,cb){
-  
-  let restaurants = yield findRestaurantByTheme(defaultResults);
+  let req = JSON.parse(event.body);
+  let restaurants = yield findRestaurantByTheme(defaultResults,req.theme);
   let response = {
     
     statusCode: 200,
